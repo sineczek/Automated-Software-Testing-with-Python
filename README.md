@@ -2,7 +2,7 @@
 
 #### Dziś, 07.03.2021 r., zaczynam kolejny etap mojego rozwoju z Pythonem.
 #### Do tego etapu podążałem od 25.12.2020 r. kiedy rozpocząłem przygodę z programowaniem w Pythonie.
-### Automatyzowanie testów - coś co chciłbym robić zawodowo w przyszłosci!
+### Automatyzowanie testów - coś co chciałbym robić zawodowo w przyszłości!
 
 #
 Uczę się korzystając z kursu: https://www.udemy.com/course/automated-software-testing-with-python
