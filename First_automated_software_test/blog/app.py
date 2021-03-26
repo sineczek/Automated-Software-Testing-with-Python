@@ -1,3 +1,7 @@
+MENU_PROMPT = 'Enter:\n"c" to create a blog\n"r" to read a blog\n"p" to create a post\n"q" to quit\n\nI want to: '
+#jak zmienna jest dużymi literami cała to nie powinno się jej zmieniać
+
+
 blogs = dict()  # new dictionary; Blog_name : Blog_object
 
 
@@ -8,6 +12,7 @@ def menu():
     # Exit
 
     print_blogs()
+    selection = input(MENU_PROMPT)
 
 
 def print_blogs():
