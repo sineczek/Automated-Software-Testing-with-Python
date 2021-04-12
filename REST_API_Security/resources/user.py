@@ -2,10 +2,10 @@ from flask_restful import Resource, reqparse
 from models.user import UserModel
 
 class UserRegister(Resource):
-"""
-This resource allows users to register by sending
-POST request with their username and password.
-"""
+    """
+    This resource allows users to register by sending
+    POST request with their username and password.
+    """
     parser = reqparse.RequestParser()
     parser.add_argument('username',
                         type=str,
@@ -23,7 +23,7 @@ POST request with their username and password.
         if UserModel.find_by_username(data['username']):
             return {'message': 'A user with that username already exists'}, 400
 
-        user = UserModel(**data):
+        user = UserModel(**data)
         user.save_to_db()
 
         return {'message' : 'User created successfully.'}, 201

@@ -11,11 +11,11 @@ from app import app
 from db import db
 
 
-class BaseTest(TestCase):
+class UnitBaseTest(TestCase):
     SQLALCHEMY_DATABASE_URI = "sqlite://"
 
     def setUp(self):
-        app.config['SQLALCHEMY_DATABASE_URI'] = BaseTest.SQLALCHEMY_DATABASE_URI
+        app.config['SQLALCHEMY_DATABASE_URI'] = UnitBaseTest.SQLALCHEMY_DATABASE_URI
         with app.app_context():
             db.init_app(app)
             db.create_all()
