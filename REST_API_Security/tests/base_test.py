@@ -15,13 +15,13 @@ class BaseTest(TestCase):
     SQLALCHEMY_DATABASE_URI = "sqlite://"
 
     @classmethod
-    def setUpClass(cls):        # działa przed całą klasą testów
+    def setUpClass(cls):
         app.config['SQLALCHEMY_DATABASE_URI'] = BaseTest.SQLALCHEMY_DATABASE_URI
         app.config['DEBUG'] = False
         with app.app_context():
             db.init_app(app)
 
-    def setUp(self):            # działa przed metodą testów
+    def setUp(self):
         with app.app_context():
             db.create_all()
         self.app = app.test_client
