@@ -2,35 +2,43 @@ from models.user import UserModel
 from tests.base_test import BaseTest
 import json
 
-
 class UserTest(BaseTest):
+    """
+    test_register_user - czy może się zarejestrować
+    test_register_and_login - czy może się zalogować
+    test_register_duplicate_user - czy już w bazie go nie ma
+    """
     def test_register_user(self):
-        with self.app() as c:
-            with self.app_context():
-                r = c.post('/register', data={'username': 'test', 'password': '1234'})
+        with self.app() as client:
+            with self.app_context(): #aby zapisać w bazie i mieć do niej dostęp
+                response = client.post('/register', data={'username' : 'test', 'password' : '1234'}) # przygotowanie danych na endpoint
 
-                self.assertEqual(r.status_code, 201)
+                self.assertEqual(response.status_code, 201)
                 self.assertIsNotNone(UserModel.find_by_username('test'))
-                self.assertDictEqual(d1={'message': 'User created successfully.'},
-                                     d2=json.loads(r.data))
+                self.assertDictEqual({"message": "User created successfully."},
+                                     json.loads(response.data)) # ładuje json'a, s - jako string
+
 
     def test_register_and_login(self):
-        with self.app() as c:
+        with self.app() as client:
             with self.app_context():
-                c.post('/register', data={'username': 'test', 'password': '1234'})
-                auth_request = c.post('/auth', data=json.dumps({
-                    'username': 'test',
-                    'password': '1234'
-                }), headers={'Content-Type': 'application/json'})
+                client.post('/register', data={'username': 'test', 'password': '1234'})
+                auth_response = client.post('/auth',
+                                           data=json.dumps({'username': 'test', 'password': '1234'}), # wysyła datę jako jsona a nie słownik
+                                           headers={'Content-Type' : 'application/json'}) # wysyła słownik jako headera
 
-                self.assertIn('access_token', json.loads(auth_request.data).keys())
+# /auth zwróci {'access_token': 'ciąg znaków zakodowany JWT'}
+                self.assertIn('access_token', json.loads(auth_response.data).keys()) # zwraca listę kluczy i sprawdza czy jest tam ['access_token']
+
+
+
 
     def test_register_duplicate_user(self):
-        with self.app() as c:
+        with self.app() as client:
             with self.app_context():
-                c.post('/register', data={'username': 'test', 'password': '1234'})
-                r = c.post('/register', data={'username': 'test', 'password': '1234'})
+                client.post('/register', data={'username': 'test', 'password': '1234'})
+                response = client.post('/register', data={'username': 'test', 'password': '1234'})
 
-                self.assertEqual(r.status_code, 400)
-                self.assertDictEqual(d1={'message': 'A user with that username already exists'},
-                                     d2=json.loads(r.data))
+                self.assertEqual(response.status_code, 400)
+                self.assertDictEqual({'message': 'A user with that username already exists'},
+                                     json.loads(response.data))
