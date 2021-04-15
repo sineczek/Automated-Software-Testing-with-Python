@@ -17,7 +17,8 @@ class BaseTest(TestCase):
     @classmethod
     def setUpClass(cls):
         app.config['SQLALCHEMY_DATABASE_URI'] = BaseTest.SQLALCHEMY_DATABASE_URI
-        app.config['DEBUG'] = False
+        app.config['DEBUG'] = False # aby ostrzeżeń nie rzucało
+        app.config['PROPAGATE_EXCEPTIONS'] = True #przy debug = true jest właczony
         with app.app_context():
             db.init_app(app)
 

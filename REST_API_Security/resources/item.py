@@ -14,7 +14,7 @@ class Item(Resource):
                         required=True,
                         help="Every item needs a store id.")
 
-    @jwt_required()
+    @jwt_required() #aby user musiał być zalogowny aby tu dotrzeć, do endpointa, sprawdza czy auth header jest obecny
     def get(self, name):
         item = ItemModel.find_by_name(name)
         if item:

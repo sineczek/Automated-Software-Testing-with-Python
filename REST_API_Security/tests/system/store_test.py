@@ -6,74 +6,74 @@ import json
 
 class StoreTest(BaseTest):
     def test_store_not_found(self):
-        with self.app() as c:
-            r = c.get('/store/test')
-            self.assertEqual(r.status_code, 404)
+        with self.app() as client:
+            resp = client.get('/store/test')
+            self.assertEqual(resp.status_code, 404)
 
     def test_store_found(self):
-        with self.app() as c:
+        with self.app() as client:
             with self.app_context():
                 StoreModel('test').save_to_db()
-                r = c.get('/store/test')
+                resp = client.get('/store/test')
 
-                self.assertEqual(r.status_code, 200)
-                self.assertDictEqual(d1={'name': 'test', 'items': []},
-                                     d2=json.loads(r.data))
+                self.assertEqual(resp.status_code, 200)
+                self.assertDictEqual(d1={'name': 'test', 'items': []},  # d1 dictionary 1
+                                     d2=json.loads(resp.data))  # d2 dictionary 2
 
     def test_store_with_items_found(self):
-        with self.app() as c:
+        with self.app() as client:
             with self.app_context():
                 StoreModel('test').save_to_db()
-                ItemModel('test', 2.99, 1).save_to_db()
-                r = c.get('/store/test')
+                ItemModel('test', 19.99, 1).save_to_db()
+                resp = client.get('/store/test')
 
-                self.assertEqual(r.status_code, 200)
-                self.assertDictEqual(d1={'name': 'test', 'items': [{'name': 'test', 'price': 2.99}]},
-                                     d2=json.loads(r.data))
+                self.assertEqual(resp.status_code, 200)
+                self.assertDictEqual(d1={'name': 'test', 'items': [{'name': 'test', 'price': 19.99}]},
+                                     d2=json.loads(resp.data))
 
     def test_delete_store(self):
-        with self.app() as c:
+        with self.app() as client:
             with self.app_context():
                 StoreModel('test').save_to_db()
-                r = c.delete('/store/test')
+                resp = client.delete('/store/test')
 
-                self.assertEqual(r.status_code, 200)
+                self.assertEqual(resp.status_code, 200)
                 self.assertDictEqual(d1={'message': 'Store deleted'},
-                                     d2=json.loads(r.data))
+                                     d2=json.loads(resp.data))
 
     def test_create_store(self):
-        with self.app() as c:
+        with self.app() as client:
             with self.app_context():
-                r = c.post('/store/test')
+                resp = client.post('/store/test')
 
-                self.assertEqual(r.status_code, 201)
+                self.assertEqual(resp.status_code, 201)
                 self.assertIsNotNone(StoreModel.find_by_name('test'))
                 self.assertDictEqual(d1={'name': 'test', 'items': []},
-                                     d2=json.loads(r.data))
+                                     d2=json.loads(resp.data))
 
     def test_create_duplicate_store(self):
-        with self.app() as c:
+        with self.app() as client:
             with self.app_context():
-                c.post('/store/test')
-                r = c.post('/store/test')
+                client.post('/store/test')
+                resp = client.post('/store/test')
 
-                self.assertEqual(r.status_code, 400)
+                self.assertEqual(resp.status_code, 400)
 
     def test_store_list(self):
-        with self.app() as c:
+        with self.app() as client:
             with self.app_context():
                 StoreModel('test').save_to_db()
-                r = c.get('/stores')
+                resp = client.get('/stores')
 
                 self.assertDictEqual(d1={'stores': [{'name': 'test', 'items': []}]},
-                                     d2=json.loads(r.data))
+                                     d2=json.loads(resp.data))
 
     def test_store_with_items_list(self):
-        with self.app() as c:
+        with self.app() as client:
             with self.app_context():
                 StoreModel('test').save_to_db()
-                ItemModel('test', 17.99, 1).save_to_db()
-                r = c.get('/stores')
+                ItemModel('test', 19.99, 1).save_to_db()
+                resp = client.get('/stores')
 
-                self.assertDictEqual(d1={'stores': [{'name': 'test', 'items': [{'name': 'test', 'price': 17.99}]}]},
-                                     d2=json.loads(r.data))
+                self.assertDictEqual(d1={'stores': [{'name': 'test', 'items': [{'name': 'test', 'price': 19.99}]}]},
+                                     d2=json.loads(resp.data))
