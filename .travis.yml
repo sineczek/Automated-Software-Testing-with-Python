@@ -5,4 +5,5 @@ python:
 install:
   - "pip install pytest"
   - "pip install -r REST_API_Security/requirements.txt"
+cd REST_API_Security/
 script: python -m pytest REST_API_Security/tests/
