@@ -4,5 +4,5 @@ python:
   - "nightly"
 install:
   - "pip install pytest"
-  - "pip install -r requirements.txt"
+  - "pip install -r REST_API_Security/requirements.txt"
 script: python -m pytest REST_API_Security/tests/
