@@ -6,7 +6,7 @@ class HomePage(BasePage):
 
     @property
     def url(self):
-        return super(HomePage, self).url + '/' # dodaje / na końcu adresu z BasePage
+        return super(HomePage, self).url + '/'
 
     @property
     def blog_link(self):
